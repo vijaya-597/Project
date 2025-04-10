@@ -1,68 +1,150 @@
-Here's a simple Python program that generates basic HTML code based on user input:
+Here's a simple calculator program created using HTML, CSS, and JavaScript:
 
-HTML Code Generator
-*Program Description*
-This program generates basic HTML code for common elements like headings, paragraphs, links, images, and lists.
-
-*Code*
+Calculator Program
+*HTML Code*
 ```
-def generate_html():
-    print("HTML Code Generator")
-    print("--------------------")
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #calculator {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #display {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 24px;
+            text-align: right;
+        }
+        .button {
+            width: 60px;
+            height: 40px;
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="display" disabled>
+        <div>
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="backspace()">DEL</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(7)">7</button>
+            <button class="button" onclick="appendNumber(8)">8</button>
+            <button class="button" onclick="appendNumber(9)">9</button>
+            <button class="button" onclick="appendOperator('/')">/</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(4)">4</button>
+            <button class="button" onclick="appendNumber(5)">5</button>
+            <button class="button" onclick="appendNumber(6)">6</button>
+            <button class="button" onclick="appendOperator('*')">*</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(1)">1</button>
+            <button class="button" onclick="appendNumber(2)">2</button>
+            <button class="button" onclick="appendNumber(3)">3</button>
+            <button class="button" onclick="appendOperator('-')">-</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(0)">0</button>
+            <button class="button" onclick="appendDecimal()">.</button>
+            <button class="button" onclick="calculate()">=</button>
+            <button class="button" onclick="appendOperator('+')">+</button>
+        </div>
+    </div>
 
-    while True:
-        print("\nOptions:")
-        print("1. Heading")
-        print("2. Paragraph")
-        print("3. Link")
-        print("4. Image")
-        print("5. List")
-        print("6. Quit")
+    <script>
+        let display = document.getElementById('display');
+        let currentNumber = '';
+        let previousNumber = '';
+        let operator = '';
 
-        choice = input("Choose an option: ")
+        function clearDisplay() {
+            display.value = '';
+            currentNumber = '';
+            previousNumber = '';
+            operator = '';
+        }
 
-        if choice == "1":
-            heading_text = input("Enter heading text: ")
-            heading_level = input("Enter heading level (1-6): ")
-            print(f"<h{heading_level}>{heading_text}</h{heading_level}>")
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+            currentNumber = currentNumber.slice(0, -1);
+        }
 
-        elif choice == "2":
-            paragraph_text = input("Enter paragraph text: ")
-            print(f"<p>{paragraph_text}</p>")
+        function appendNumber(number) {
+            currentNumber += number.toString();
+            display.value += number.toString();
+        }
 
-        elif choice == "3":
-            link_text = input("Enter link text: ")
-            link_url = input("Enter link URL: ")
-            print(f"<a href='{link_url}'>{link_text}</a>")
+        function appendDecimal() {
+            if (!currentNumber.includes('.')) {
+                currentNumber += '.';
+                display.value += '.';
+            }
+        }
 
-        elif choice == "4":
-            image_url = input("Enter image URL: ")
-            image_alt = input("Enter image alt text: ")
-            print(f"<img src='{image_url}' alt='{image_alt}'>")
+        function appendOperator(op) {
+            if (currentNumber !== '') {
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operator = op;
+                display.value += op;
+            }
+        }
 
-        elif choice == "5":
-            list_items = input("Enter list items (comma-separated): ")
-            list_items = list_items.split(",")
-            list_html = "<ul>\n"
-            for item in list_items:
-                list_html += f"<li>{item.strip()}</li>\n"
-            list_html += "</ul>"
-            print(list_html)
-
-        elif choice == "6":
-            break
-
-        else:
-            print("Invalid option. Please choose again.")
-
-if __name__ == "__main__":
-    generate_html()
+        function calculate() {
+            if (currentNumber !== '' && previousNumber !== '') {
+                let result;
+                switch (operator) {
+                    case '+':
+                        result = parseFloat(previousNumber) + parseFloat(currentNumber);
+                        break;
+                    case '-':
+                        result = parseFloat(previousNumber) - parseFloat(currentNumber);
+                        break;
+                    case '*':
+                        result = parseFloat(previousNumber) * parseFloat(currentNumber);
+                        break;
+                    case '/':
+                        result = parseFloat(previousNumber) / parseFloat(currentNumber);
+                        break;
+                    default:
+                        result = 0;
+                }
+                display.value = result.toString();
+                currentNumber = result.toString();
+                previousNumber = '';
+                operator = '';
+            }
+        }
+    </script>
+</body>
+</html>
 ```
 
 *Example Usage*
-1. Run the program.
-2. Choose an option (e.g., 1 for heading).
-3. Enter the required information (e.g., heading text and level).
-4. The program will generate and print the corresponding HTML code.
-
-This program provides a simple way to generate basic HTML code for common elements. You can modify and extend it to suit your needs.
+1. Open the HTML file in a web browser
